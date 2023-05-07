@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.28.0 (HEAD)
+  labels:
+    io.kompose.service: keycloak
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: keycloak
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.28.0 (HEAD)
+      labels:
+        io.kompose.network/jarvis-auth-default: "true"
+        io.kompose.service: keycloak
+    spec:
+      containers:
+        - args:
+            - start-dev
+          env:
+            - name: KEYCLOAK_ADMIN
+              value: admin
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: admin
+          image: quay.io/keycloak/keycloak:latest
+          name: keycloak
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 1500m
+              memory: 1024Mi
+      restartPolicy: Always
