@@ -2,8 +2,7 @@ version: "3"
 
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    command: start-dev
+    build: .
     ports:
       - "4000:8080"
     environment:
